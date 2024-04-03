@@ -1,0 +1,37 @@
+import axios, { AxiosResponse } from 'axios'
+import { v4 as uuidv4 } from 'uuid'
+
+export async function run() {
+  const YOUR_JWT_HERE = 'your_jwt_token_here'
+  const depositId = uuidv4()
+
+  try {
+    const response: AxiosResponse = await axios.post(
+      'https://api.sandbox.pawapay.cloud/deposits',
+      {
+        depositId: depositId,
+        amount: amount,
+        currency: currency,
+        correspondent: 'MTN_MOMO_ZMB',
+        payer: {
+          type: 'MSISDN',
+          address: { value: phone_number },
+        },
+        customerTimestamp: '2020-02-21T17:32:28Z',
+        statementDescription: 'Note of 4 to 22 chars',
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${YOUR_JWT_HERE}`,
+        },
+      },
+    )
+
+    console.log(response.data)
+  } catch (error) {
+    console.error('Error:', error.response?.data || error.message)
+  }
+}
+
+run()
